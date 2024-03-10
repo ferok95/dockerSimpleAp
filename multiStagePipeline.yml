@@ -12,8 +12,20 @@ stages:
     steps:
     - task: Docker@2
       inputs:
+        containerRegistry: 'meritomf01SvcConnection'
+        repository: 'SalesBook.LB'
         command: 'buildAndPush'
         Dockerfile: '**/SalesBook.LB/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'meritomf01SvcConnection'
+        repository: 'SalesBook.WEB'
+        command: 'buildAndPush'
+        Dockerfile: '**/SalesBook.WEB/Dockerfile'
         tags: |
           $(Build.BuildId)
           latest
