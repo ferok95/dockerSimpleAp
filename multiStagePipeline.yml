@@ -49,4 +49,94 @@ stages:
         connectionType: 'kubernetesServiceConnection'
         kubernetesServiceConnection: 'aks01mfSvcConnection'
         manifests: '**/AKS/deployment.yaml'
+
+- stage: changeTMconf
     
+  pool: 
+    vmImage: ubuntu-latest
+    
+  jobs:
+  - job: increasTrafficManager0
+    displayName: increasTrafficManager0
+    steps:
+    - script: echo "Deploying to development environment..."
+      displayName: 'Deploy to Dev'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sub-06(82fec995-d706-4757-a002-6bfc2d89631a)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name e1 --weight 800 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name e2 --weight 100 --type azureEndpoints
+        useGlobalConfig: true    
+  - job: waitForNext
+    displayName: waitForNext
+    dependsOn: increasTrafficManager0
+    pool: server
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '1'  # Adjust the delay time as needed
+  - job: increasTrafficManager1
+    dependsOn: waitForNext
+    displayName: increasTrafficManager1
+    steps:
+    - script: echo "Deploying to development environment..."
+      displayName: 'Deploy to Dev'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sub-06(82fec995-d706-4757-a002-6bfc2d89631a)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name e1 --weight 600 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name e2 --weight 300 --type azureEndpoints
+        useGlobalConfig: true 
+  - job: waitForNext1
+    pool: server
+    displayName: waitForNext1
+    dependsOn: increasTrafficManager1
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '1'  # Adjust the delay time as needed
+  - job: increasTrafficManager2
+    displayName: increasTrafficManager2
+    dependsOn: waitForNext1
+    steps:
+    - script: echo "Deploying to development environment..."
+      displayName: 'Deploy to Dev'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sub-06(82fec995-d706-4757-a002-6bfc2d89631a)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name e1 --weight 300 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name e2 --weight 600 --type azureEndpoints
+        useGlobalConfig: true 
+  - job: waitForNext2
+    pool: server
+    displayName: waitForNext2
+    dependsOn: increasTrafficManager2
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '1'  # Adjust the delay time as needed
+  - job: increasTrafficManager3
+    displayName: increasTrafficManager3
+    dependsOn: waitForNext2
+    steps:
+    - script: echo "Deploying to development environment..."
+      displayName: 'Deploy to Dev'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sub-06(82fec995-d706-4757-a002-6bfc2d89631a)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name ab1 --weight 100 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group global-net-rg --profile-name tfmeritomf --name ab2 --weight 900 --type azureEndpoints
+        useGlobalConfig: true 
+
