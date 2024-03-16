@@ -71,8 +71,8 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e1-apache --weight 100 --type azureEndpoints
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e2-nginx --weight 50 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e1-apache --weight 100 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e2-nginx --weight 50 --type azureEndpoints
         useGlobalConfig: true
   - job: waitForNext
     displayName: waitForNext
@@ -94,8 +94,8 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e1-apache --weight 100 --type azureEndpoints
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e2-nginx --weight 100 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e1-apache --weight 100 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e2-nginx --weight 100 --type azureEndpoints
         useGlobalConfig: true
   - job: waitForNext1
     pool: server
@@ -117,8 +117,8 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e1-apache --weight 100 --type azureEndpoints
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e2-nginx --weight 200 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e1-apache --weight 100 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e2-nginx --weight 200 --type azureEndpoints
         useGlobalConfig: true
   - job: waitForNext2
     pool: server
@@ -140,6 +140,6 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e1-apache --weight 50 --type azureEndpoints
-          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name tfmeritomf --name e2-nginx --weight 900 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e1-apache --weight 50 --type azureEndpoints
+          az network traffic-manager endpoint update --resource-group dawidtfstaterg --profile-name mytraficmanager --name e2-nginx --weight 900 --type azureEndpoints
         useGlobalConfig: true
