@@ -1,0 +1,55 @@
+stages:
+
+- stage: BuildServices
+
+  pool:
+    vmImage: ubuntu-latest
+
+  jobs:
+  - job: BuildDocker_SalesBookLB
+    displayName: Build Docker Image for SalesBookLB app
+
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ferokbrelok95SvcConnection'
+        repository: 'SalesBookLB'
+        command: 'buildAndPush'
+        Dockerfile: '**/SalesBook.LB/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest
+    
+
+  - job: BuildDocker_SalesBookWEB
+    displayName: Build Docker Image for SalesBookWEB app
+    steps:
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ferokbrelok95SvcConnection'
+        repository: 'SalesBookWEB'
+        command: 'buildAndPush'
+        Dockerfile: '**/SalesBook.WEB/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest
+
+- stage: DeployAKS
+
+  pool:
+    vmImage: ubuntu-latest
+  
+  jobs:
+  - job: DeploytoAKS
+    displayName: Deploy to AKS
+    
+    steps:
+
+    - task: KubernetesManifest@1
+      inputs:
+        action: 'deploy'
+        connectionType: 'kubernetesServiceConnection'
+        kubernetesServiceConnection: 'dawid95-aksSvcConnection'
+        manifests: '**/AKS/deployment.yaml'
+    

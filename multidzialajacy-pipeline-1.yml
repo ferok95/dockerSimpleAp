@@ -1,0 +1,35 @@
+stages:
+
+- stage: BuildServices
+
+  pool:
+    vmImage: ubuntu-latest
+
+  jobs:
+  - job: BuildDocker_SalesBookLB
+    displayName: Build Docker Image for SalesBook.LB app
+
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ferokbrelok95SvcConnection'
+        repository: 'SalesBook.LB'
+        command: 'buildAndPush'
+        Dockerfile: '**/SalesBook.LB/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest/Dockerfile'
+    
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ferokbrelok95SvcConnection'
+        repository: 'SalesBook.WEB'
+        command: 'buildAndPush'
+        Dockerfile: '**/SalesBook.WEB/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest
+
+
+
