@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: meritomf01.azurecr.io/salesbook.lb:latest
+        image: ferokbrelok95.azurecr.io/salesbooklb:latest
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: apache
-        image: meritomf01.azurecr.io/salesbook.web:latest
+        image: ferokbrelok95.azurecr.io/salesbookweb:latest
         ports:
         - containerPort: 81
       imagePullSecrets:
