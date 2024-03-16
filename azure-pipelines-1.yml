@@ -35,15 +35,21 @@ stages:
           $(Build.BuildId)
           latest
 
-- stage: BuildServices
+- stage: DeployAKS
 
   pool:
     vmImage: ubuntu-latest
   
   jobs:
   - job: DeploytoAKS
-    dispalyName: Deploy to AKS
+    displayName: Deploy to AKS
     
     steps:
 
+    - task: KubernetesManifest@1
+      inputs:
+        action: 'deploy'
+        connectionType: 'kubernetesServiceConnection'
+        kubernetesServiceConnection: 'dawid95-aksSvcConnection'
+        manifests: '**/AKS/deployment.yaml'
     
