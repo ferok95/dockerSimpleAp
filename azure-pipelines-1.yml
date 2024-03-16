@@ -35,3 +35,15 @@ stages:
           $(Build.BuildId)
           latest
 
+- stage: BuildServices
+
+  pool:
+    vmImage: ubuntu-latest
+  
+  jobs:
+  - job: DeploytoAKS
+    dispalyName: Deploy to AKS
+    
+    steps:
+
+    
